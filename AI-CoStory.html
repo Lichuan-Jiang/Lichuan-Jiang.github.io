@@ -1,0 +1,275 @@
+<!-- 
+AI-CoStory (Copyright: idea by Lichuan 3rd June, 2026; self-made demo)
+
+objective: remember complex/non-intuitive concepts or processes (ARIVA phase: Processing)
+interaction format: whole-class activity
+suitable course size: small to medium
+description: Similar to a word cloud with collaboration of all classmates, yet empowered with AI. Everyone contributes their own understanding of the concept, or what they find difficult to grasp. AI would make a summary story that based on all the inputs or even generate a film/video that helps with remembering and discussion. -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI-CoStory Demo</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    background:#f5f7fa;
+}
+
+h1{
+    color:#2c3e50;
+}
+
+textarea{
+    width:100%;
+    height:200px;
+    padding:10px;
+}
+
+button{
+    padding:10px 20px;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+#story{
+    margin-top:20px;
+    padding:20px;
+    background:white;
+    border-radius:10px;
+    box-shadow:0 0 5px rgba(0,0,0,0.1);
+    white-space:pre-wrap;
+}
+:root{
+    --tum-blue:#0065BD;
+
+    --text-main:#F8FAFC;
+    --text-secondary:#CBD5E1;
+
+    --glass-bg:rgba(255,255,255,0.12);
+    --glass-border:rgba(255,255,255,0.18);
+
+    --input-bg:rgba(15,23,42,0.55);
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+
+    color:var(--text-main);
+
+    background:
+        linear-gradient(
+            135deg,
+            #0F172A 0%,
+            #1E3A8A 50%,
+            #0F172A 100%
+        );
+
+    min-height:100vh;
+}
+
+h1,h2,h3{
+    color:white;
+}
+
+p{
+    color:var(--text-secondary);
+}
+
+.glass{
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    background:var(--glass-bg);
+
+    border:1px solid var(--glass-border);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    box-shadow:
+        0 8px 32px rgba(0,0,0,.3);
+}
+
+textarea{
+
+    width:100%;
+    min-height:220px;
+
+    background:var(--input-bg);
+
+    color:white;
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    font-size:16px;
+
+    outline:none;
+}
+
+textarea::placeholder{
+    color:#94A3B8;
+}
+
+textarea:focus{
+    border-color:var(--tum-blue);
+
+    box-shadow:
+        0 0 0 3px rgba(0,101,189,.2);
+}
+
+button{
+    background:var(--tum-blue);
+
+    color:white;
+
+    border:none;
+
+    border-radius:16px;
+
+    padding:14px 28px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+
+    background:#0076DF;
+}
+
+.hero-image{
+    width:10%;
+    max-height:50px;
+    object-fit:cover;
+
+    /* border-radius:24px;
+
+    margin-bottom:25px; */
+}
+</style>
+</head>
+
+<body>
+
+    <img
+  src="images/tum.svg"
+  alt="TUM Campus"
+  class="hero-image">
+
+<h1>AI-CoStory</h1>
+
+<p>
+Paste student responses (one response per line).
+</p>
+
+<textarea id="inputs"></textarea>
+
+<br>
+
+<button onclick="generateStory()">
+Generate Co-Story
+</button>
+
+<button onclick="downloadStory()">
+Export Story
+</button>
+
+<div id="story"></div>
+
+<script>
+
+function generateStory(){
+
+    const text =
+        document.getElementById("inputs").value;
+
+    const responses =
+        text.split("\n")
+            .filter(x => x.trim() !== "");
+
+    if(responses.length === 0){
+        alert("Please add responses.");
+        return;
+    }
+
+    let story =
+`THE MEMORY QUEST (demo only, real application requires API)
+
+A group of learners entered the Kingdom of Understanding.
+
+`;
+
+    responses.forEach((r,index)=>{
+        story +=
+`Student ${index+1} carried an important clue:
+"${r}"
+
+`;
+    });
+
+    story +=
+`By combining every clue together,
+the class formed a complete understanding
+that no individual learner could achieve alone.
+
+The difficult concept became a shared story,
+making it easier to remember and discuss.`;
+
+    document.getElementById("story").innerText =
+        story;
+}
+
+function downloadStory(){
+
+    const text =
+        document.getElementById("story").innerText;
+
+    const blob =
+        new Blob([text], {type:"text/plain"});
+
+    const a =
+        document.createElement("a");
+
+    a.href =
+        URL.createObjectURL(blob);
+
+    a.download =
+        "AI-CoStory.txt";
+
+    a.click();
+}
+
+
+</script>
+
+</body>
+
+<footer>
+    <p>
+        AI-CoStory © 2026
+
+        Idea + demo by Lichuan (3 June 2026)
+
+        <br>
+
+        ProLehre Onboarding Demo
+        by Lichuan
+    </p>
+</footer>
+</html>
