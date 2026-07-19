@@ -17,6 +17,32 @@ const controls = {
   showVectors: document.getElementById("showVectors")
 };
 
+const themeToggle = document.getElementById("themeToggle");
+const themeStorageKey = "magneticDipoles.theme";
+
+function getInitialTheme() {
+  const saved = localStorage.getItem(themeStorageKey);
+  if (saved === "light" || saved === "dark") return saved;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function setTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  themeToggle.textContent = theme === "dark" ? "Bright mode" : "Dark mode";
+  themeToggle.setAttribute("aria-pressed", theme === "dark");
+}
+
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme || getInitialTheme();
+  const next = current === "dark" ? "light" : "dark";
+  setTheme(next);
+  localStorage.setItem(themeStorageKey, next);
+  draw();
+}
+
+themeToggle.addEventListener("click", toggleTheme);
+setTheme(getInitialTheme());
+
 const world = {
   xMin: -4,
   xMax: 4,
